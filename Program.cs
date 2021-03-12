@@ -92,7 +92,7 @@ namespace Synthesizer
             StandardOutPlayer player = new StandardOutPlayer();
             player.Input = shaper;
 
-            int samplesPerBufferSize = 4410;
+            int samplesPerBufferSize = 2205;
 
             osc2.AllocateBuffers(samplesPerBufferSize);
             osc3.AllocateBuffers(samplesPerBufferSize);
