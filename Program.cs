@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Synthesizer
@@ -100,7 +101,13 @@ namespace Synthesizer
 
             player.StartPlayback();
 
-            Console.ReadLine();
+            while (true)
+            {
+                Thread.Sleep(1000);
+                player.ResetOffset();
+                wave.ResetOffset();
+                modWave.ResetOffset();
+            }
         }
     }
 }
