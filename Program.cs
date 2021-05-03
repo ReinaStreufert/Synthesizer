@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,8 +23,8 @@ namespace Synthesizer
             modWave2.Harmonics = HarmonicPrimitives.GenerateSquareWaveHarmonics(32);
 
             ADSREnvelope pitchEnvelope = new ADSREnvelope();
-            pitchEnvelope.InitialValue = NoteUtils.GetMidiNoteFrequency(46 + 36);
-            pitchEnvelope.PeekValue = NoteUtils.GetMidiNoteFrequency(46 + 36);
+            pitchEnvelope.InitialValue = 0;//NoteUtils.GetMidiNoteFrequency(46 + 36);
+            pitchEnvelope.PeekValue = 0;//NoteUtils.GetMidiNoteFrequency(46 + 36);
             pitchEnvelope.AttackTime = 0F;
             pitchEnvelope.AttackType = CurveType.Linear;
             pitchEnvelope.AttackCurveHardness = 2F;
@@ -35,7 +36,7 @@ namespace Synthesizer
             pitchEnvelope.ReleaseTime = 0F;
             pitchEnvelope.ReleaseType = CurveType.SlowStart;
             pitchEnvelope.ReleaseCurveHardness = 2F;
-            pitchEnvelope.SustainValue = NoteUtils.GetMidiNoteFrequency(46);
+            pitchEnvelope.SustainValue = 0;//NoteUtils.GetMidiNoteFrequency(46);
 
             Oscillator osc3 = new Oscillator();
             osc3.PitchSource = pitchEnvelope;
@@ -101,9 +102,14 @@ namespace Synthesizer
 
             player.StartPlayback();
 
+            Stream stdin = Console.OpenStandardInput();
             while (true)
             {
-                Thread.Sleep(1000);
+                byte midiNote = (byte)stdin.ReadByte();
+                pitchEnvelope.InitialValue = midiNote + 36;
+                pitchEnvelope.PeekValue = midiNote + 36;
+                pitchEnvelope.SustainValue = midiNote;
+                pitchEnvelope.EnvelopeFinished = false;
                 player.ResetOffset();
                 wave.ResetOffset();
                 modWave.ResetOffset();
