@@ -106,9 +106,9 @@ namespace Synthesizer
             while (true)
             {
                 byte midiNote = (byte)stdin.ReadByte();
-                pitchEnvelope.InitialValue = midiNote + 36;
-                pitchEnvelope.PeekValue = midiNote + 36;
-                pitchEnvelope.SustainValue = midiNote;
+                pitchEnvelope.InitialValue = NoteUtils.GetMidiNoteFrequency(midiNote + 36);
+                pitchEnvelope.PeekValue = NoteUtils.GetMidiNoteFrequency(midiNote + 36);
+                pitchEnvelope.SustainValue = NoteUtils.GetMidiNoteFrequency(midiNote);
                 pitchEnvelope.EnvelopeFinished = false;
                 player.ResetOffset();
                 wave.ResetOffset();
